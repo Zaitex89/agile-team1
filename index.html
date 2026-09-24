@@ -1,11 +1,161 @@
-<!DOCTYPE html>
-<html lang="en">
+<!doctype html>
+<html lang="sv">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Hello World</title>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Portunus – Hur gammal är du när du får nyckeln?</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Poppins:wght@500;600&family=Instrument+Sans:wght@400;500;600&display=swap" rel="stylesheet">
+<style>
+:root {
+  --creme: #F1ECE6;
+  --taupe-ljus: #DDD5CD;
+  --taupe: #B6A697;
+  --kant: #C9BEB2;
+  --vin: #7D4047;
+  --kol: #2E2E2E;
+  --petrol: #1F3B3F;
+  --dampad: #5E564F;
+  --falt: #F7F4F0;
+  --rubrik: 'Poppins', 'Instrument Sans', system-ui, sans-serif;
+  --text: 'Instrument Sans', system-ui, sans-serif;
+}
+* { box-sizing: border-box; }
+html { scroll-behavior: smooth; }
+body { margin: 0; background: var(--creme); color: var(--kol); font-family: var(--text); -webkit-font-smoothing: antialiased; }
+a { color: inherit; }
+:focus-visible { outline: 2px solid var(--vin); outline-offset: 3px; }
+
+.sida { max-width: 1280px; margin: 0 auto; padding-bottom: 24px; display: flex; flex-direction: column; gap: 24px; }
+
+/* Top */
+.topp { position: relative; min-height: 880px; display: grid; grid-template-columns: 1fr 600px; gap: 24px; padding: 24px 24px 0 0; }
+.top_info { display: flex; flex-direction: column; padding: 20px 0 72px 88px; }
+.top_picture { width: 100%; height: 856px; object-fit: cover; border-radius: 36px; box-shadow: 0 30px 60px -30px rgba(46, 46, 46, 0.45); display: block; }
+
+.meny { display: flex; justify-content: space-between; align-items: center; }
+.logga { display: flex; align-items: center; gap: 10px; text-decoration: none; color: var(--petrol); }
+.logga span { font-family: var(--rubrik); font-size: 22px; font-weight: 600; letter-spacing: 0.08em; text-transform: uppercase; }
+.menu_link { text-decoration: none; padding: 12px 20px; border-radius: 999px; border: 1px solid var(--taupe); background: rgba(241, 236, 230, 0.88); font-size: 13px; font-weight: 500; letter-spacing: 0.1em; text-transform: uppercase; transition: background .3s ease, color .3s ease; }
+.menu_link:hover { background: var(--taupe-ljus); color: var(--vin); }
+
+.intro { flex-grow: 1; display: flex; flex-direction: column; justify-content: center; gap: 26px; max-width: 470px; padding-top: 32px; }
+.intro_label { font-size: 13px; font-weight: 500; letter-spacing: 0.12em; text-transform: uppercase; color: var(--vin); }
+h1 { margin: 0; font-family: var(--rubrik); font-size: 52px; line-height: 1.1; font-weight: 500; letter-spacing: 0.01em; text-transform: uppercase; color: var(--petrol); }
+.intro p { margin: 0; font-size: 18px; line-height: 1.65; color: var(--dampad); }
+
+.formular { display: flex; flex-direction: column; gap: 16px; padding: 22px; margin-top: 4px; background: var(--taupe-ljus); border-radius: 28px; }
+.formular__falt { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 12px; }
+.formular label { display: flex; flex-direction: column; gap: 8px; font-size: 13px; font-weight: 600; }
+.formular input, .formular select { height: 50px; width: 100%; padding: 0 16px; font: inherit; font-size: 17px; font-weight: 400; color: var(--kol); border: 1px solid var(--kant); border-radius: 16px; background: var(--falt); }
+.formular input::placeholder { color: #968B80; }
+.knapp { height: 56px; border: none; border-radius: 999px; background: var(--vin); color: var(--creme); font: inherit; font-size: 16px; font-weight: 600; letter-spacing: 0.04em; cursor: pointer; box-shadow: 0 12px 24px -12px rgba(125, 64, 71, 0.6); transition: background .3s ease; }
+.knapp:hover { background: #6A353B; }
+
+/* calculation */
+.utrakning { margin: 0 24px; border-radius: 36px; display: flex; gap: 88px; align-items: flex-start; padding: 96px 64px; background: var(--taupe-ljus); }
+.utrakning__text { width: 400px; flex-shrink: 0; display: flex; flex-direction: column; gap: 22px; }
+h2 { margin: 0; font-family: var(--rubrik); font-size: 38px; line-height: 1.15; font-weight: 500; letter-spacing: 0.01em; text-transform: uppercase; color: var(--petrol); }
+.utrakning__text p { margin: 0; font-size: 17px; line-height: 1.65; }
+.utrakning__text .liten { font-size: 15px; line-height: 1.6; color: var(--dampad); }
+
+.rakning { flex-grow: 1; padding: 32px 36px; border-radius: 28px; background: var(--creme); font-variant-numeric: tabular-nums; }
+.rad { display: grid; grid-template-columns: minmax(0, 1.5fr) minmax(0, 1fr) minmax(0, 1fr); gap: 24px; padding: 18px 0; border-bottom: 1px solid var(--taupe-ljus); font-size: 19px; }
+.rad span:not(:first-child) { text-align: right; }
+.rad--rubrik { padding-top: 0; padding-bottom: 14px; font-size: 12px; font-weight: 500; letter-spacing: 0.1em; text-transform: uppercase; color: var(--dampad); }
+.rad--summa { border-bottom: none; align-items: baseline; padding-bottom: 0; padding-top: 20px; }
+.rad--summa span:first-child { font-weight: 600; }
+.stor { font-family: var(--rubrik); font-size: 60px; line-height: 1; font-weight: 500; color: var(--petrol); }
+.stor--vin { color: var(--vin); }
+
+/* Mobile */
+@media (max-width: 1100px) {
+  .topp { grid-template-columns: 1fr; min-height: 0; padding: 24px; }
+  .top_info { padding: 0; }
+  .top_picture { height: 520px; }
+  .intro { max-width: 560px; padding: 48px 0 16px; }
+  .utrakning { flex-direction: column; gap: 48px; padding: 56px 32px; }
+  .utrakning__text { width: auto; }
+  .rakning { width: 100%; }
+}
+@media (max-width: 600px) {
+  h1 { font-size: 36px; }
+  h2 { font-size: 28px; }
+  .formular__falt { grid-template-columns: 1fr; }
+  .top_picture { height: 380px; border-radius: 28px; }
+  .utrakning { margin: 0 12px; padding: 40px 20px; border-radius: 28px; }
+  .rakning { padding: 20px; }
+  .rad { gap: 10px; font-size: 16px; grid-template-columns: minmax(0, 1.3fr) minmax(0, 1fr) minmax(0, 1fr); }
+  .rad--rubrik { font-size: 10px; letter-spacing: 0.04em; }
+  .stor { font-size: 42px; }
+}
+@media (prefers-reduced-motion: reduce) {
+  html { scroll-behavior: auto; }
+  * { transition: none !important; }
+}
+</style>
 </head>
 <body>
-    <h1>Hello, World!</h1>
+<main class="sida">
+
+  <section class="topp" id="top">
+    <div class="top_info">
+      <header class="meny">
+        <a class="logga" href="#top">
+          <svg width="26" height="26" viewBox="0 0 24 24" fill="none" stroke="#7D4047" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="7.5" cy="12" r="4"/><path d="M11.5 12H21"/><path d="M17 12v3"/><path d="M20 12v2.5"/></svg>
+          <span>Portunus</span>
+        </a>
+        <nav aria-label="Huvudmeny">
+          <a class="menu_link" href="#sa-funkar-det">Så funkar det</a>
+        </nav>
+      </header>
+
+      <div class="intro">
+        <div class="intro_label">Kötidsräknare för Stockholm</div>
+        <h1>Hur gammal är du när du får nyckeln?</h1>
+        <p>Fyll i din ålder, din kötid och var du vill bo. Du får svaret som en ålder, inte ett antal år.</p>
+
+        <form class="formular" onsubmit="return false;">
+          <div class="formular__falt">
+            <label>Din ålder
+              <input type="number" name="alder" min="16" max="99" placeholder="22">
+            </label>
+            <label>Kötid i år
+              <input type="number" name="kotid" min="0" step="0.1" placeholder="2">
+            </label>
+            <label>Område
+              <select name="omrade">
+                <option>Farsta</option>
+                <option>Södermalm</option>
+                <option>Vällingby</option>
+              </select>
+            </label>
+          </div>
+          <button class="knapp" type="submit">Räkna ut min ålder</button>
+        </form>
+      </div>
+    </div>
+
+    <img class="top_picture" src="grand.jpg" alt="Gränd i Gamla stan i skymningen, med gatlyktor och kullersten">
+  </section>
+
+  <section class="utrakning" id="sa-funkar-det">
+    <div class="utrakning__text">
+      <h2>Ingen magi. En uträkning.</h2>
+      <p>Vi tar kötiden för området du vill bo i, drar av den tid du redan stått i kön och lägger till din ålder. Samma räkning görs för andra områden och nyproduktion, så du ser flera alternativ på en gång.</p>
+      <p class="liten">Under 2025 var snittkötiden för en vanlig hyresrätt 9 år. På Södermalm krävdes 21,6 år, men för en nybyggd lägenhet i Enskede-Årsta-Vantör räckte 4,2 år. Siffrorna visar hur det såg ut förra året, så svaret är en uppskattning, inte ett löfte.</p>
+    </div>
+
+    <div class="rakning">
+      <div class="rad rad--rubrik"><span>22 år, 2 års kötid</span><span>Södermalm</span><span>Årsta</span></div>
+      <div class="rad"><span>Kötid för området</span><span>21,6 år</span><span>12,4 år</span></div>
+      <div class="rad"><span>− din kötid</span><span>2 år</span><span>2 år</span></div>
+      <div class="rad"><span>+ din ålder idag</span><span>22 år</span><span>22 år</span></div>
+      <div class="rad rad--summa"><span>Först i kön vid</span><span class="stor">42</span><span class="stor stor--vin">32</span></div>
+    </div>
+  </section>
+
+</main>
 </body>
 </html>

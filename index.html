@@ -116,7 +116,7 @@ h2 { margin: 0; font-family: var(--rubrik); font-size: 38px; line-height: 1.15; 
         <h1>Hur gammal är du när du får nyckeln?</h1>
         <p>Fyll i din ålder, din kötid och var du vill bo. Du får svaret som en ålder, inte ett antal år.</p>
 
-        <form class="formular" onsubmit="return false;">
+        <form class="formular" id="kotidsform">
           <div class="formular__falt">
             <label>Din ålder
               <input type="number" name="alder" min="16" max="99" placeholder="22">
@@ -147,15 +147,72 @@ h2 { margin: 0; font-family: var(--rubrik); font-size: 38px; line-height: 1.15; 
       <p class="liten">Under 2025 var snittkötiden för en vanlig hyresrätt 9 år. På Södermalm krävdes 21,6 år, men för en nybyggd lägenhet i Enskede-Årsta-Vantör räckte 4,2 år. Siffrorna visar hur det såg ut förra året, så svaret är en uppskattning, inte ett löfte.</p>
     </div>
 
-    <div class="rakning">
-      <div class="rad rad--rubrik"><span>22 år, 2 års kötid</span><span>Södermalm</span><span>Årsta</span></div>
-      <div class="rad"><span>Kötid för området</span><span>21,6 år</span><span>12,4 år</span></div>
-      <div class="rad"><span>− din kötid</span><span>2 år</span><span>2 år</span></div>
-      <div class="rad"><span>+ din ålder idag</span><span>22 år</span><span>22 år</span></div>
-      <div class="rad rad--summa"><span>Först i kön vid</span><span class="stor">42</span><span class="stor stor--vin">32</span></div>
+    <div class="rakning" id="rakning" aria-live="polite">
+      <div class="rad rad--rubrik"><span id="rub-info">22 år, 2 års kötid</span><span id="rub-omrade1">Södermalm</span><span id="rub-omrade2">Årsta</span></div>
+      <div class="rad"><span>Kötid för området</span><span id="kotid1">21,6 år</span><span id="kotid2">12,4 år</span></div>
+      <div class="rad"><span>− din kötid</span><span id="minus1">2 år</span><span id="minus2">2 år</span></div>
+      <div class="rad"><span>+ din ålder idag</span><span id="alder1">22 år</span><span id="alder2">22 år</span></div>
+      <div class="rad rad--summa"><span>Först i kön vid</span><span class="stor" id="summa1">42</span><span class="stor stor--vin" id="summa2">32</span></div>
     </div>
   </section>
 
 </main>
+
+<script>
+  // Ungefärlig kötid (år) för vanlig hyresrätt respektive nyproduktion per område.
+  // Baserat på 2025 års snittsiffror som nämns i texten ovan (Södermalm 21,6 år,
+  // nyproduktion ned mot 4,2 år) – övriga områden är uppskattningar.
+  var kotider = {
+    "Farsta":     { vanlig: 9.4,  ny: 3.2 },
+    "Södermalm":  { vanlig: 21.6, ny: 8.1 },
+    "Vällingby":  { vanlig: 11.8, ny: 4.2 }
+  };
+
+  function formateraAr(tal) {
+    var avrundat = Math.round(tal * 10) / 10;
+    return avrundat.toString().replace(".", ",") + " år";
+  }
+
+  function raknaUtAlder() {
+    var form = document.getElementById("kotidsform");
+    var alder = parseFloat(form.alder.value);
+    var kotid = parseFloat(form.kotid.value);
+    var omrade = form.omrade.value;
+
+    if (isNaN(alder) || alder <= 0) alder = parseFloat(form.alder.placeholder) || 22;
+    if (isNaN(kotid) || kotid < 0) kotid = parseFloat(form.kotid.placeholder) || 0;
+
+    var data = kotider[omrade] || kotider["Farsta"];
+
+    var kvarVanlig = Math.max(data.vanlig - kotid, 0);
+    var kvarNy = Math.max(data.ny - kotid, 0);
+
+    var alderVanlig = alder + kvarVanlig;
+    var alderNy = alder + kvarNy;
+
+    document.getElementById("rub-info").textContent = alder + " år, " + formateraAr(kotid).replace(" år", "") + " års kötid";
+    document.getElementById("rub-omrade1").textContent = omrade;
+    document.getElementById("rub-omrade2").textContent = omrade + " (nyprod.)";
+
+    document.getElementById("kotid1").textContent = formateraAr(data.vanlig);
+    document.getElementById("kotid2").textContent = formateraAr(data.ny);
+
+    document.getElementById("minus1").textContent = formateraAr(kotid);
+    document.getElementById("minus2").textContent = formateraAr(kotid);
+
+    document.getElementById("alder1").textContent = alder + " år";
+    document.getElementById("alder2").textContent = alder + " år";
+
+    document.getElementById("summa1").textContent = Math.round(alderVanlig);
+    document.getElementById("summa2").textContent = Math.round(alderNy);
+  }
+
+  document.getElementById("kotidsform").addEventListener("submit", function (e) {
+    e.preventDefault();
+    raknaUtAlder();
+    document.getElementById("rakning").scrollIntoView({ behavior: "smooth", block: "center" });
+  });
+</script>
+
 </body>
 </html>
